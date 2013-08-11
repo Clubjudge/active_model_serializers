@@ -147,6 +147,8 @@ module ActiveModel
         alias plural_key key
 
         def serialize
+          return unless associated_object
+
           associated_object.map do |item|
             find_serializable(item).serializable_hash
           end
@@ -192,7 +194,7 @@ module ActiveModel
           object = associated_object
 
           if object && polymorphic?
-            { 
+            {
               :type => polymorphic_key,
               polymorphic_key => find_serializable(object).serializable_hash
             }
@@ -211,7 +213,7 @@ module ActiveModel
           object = associated_object
 
           if object && polymorphic?
-            { 
+            {
               :type => polymorphic_key,
               :id => object.read_attribute_for_serialization(:id)
             }
